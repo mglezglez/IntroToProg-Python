@@ -25,8 +25,8 @@ strChoice = "" # A Capture the user option selection
 try:
     objFile = open("ToDoList.txt", "r+")
     for row in objFile:
-        item, value = row.split(",")
-        dicRow = {"item": item.strip(), "value": value.strip()}
+        task, priority = row.split(",")
+        dicRow = {"task": task.strip(), "priority": int(priority.strip())}
         lstTable.append(dicRow)
     objFile.close()
 except Exception as error:
@@ -38,8 +38,8 @@ while (True):
     print("""
     Menu of Options
     1) Show current data
-    2) Add a new item.
-    3) Remove an existing item.
+    2) Add a new task.
+    3) Remove an existing task.
     4) Save Data to File
     5) Exit Program
     """)
@@ -49,43 +49,43 @@ while (True):
     if (strChoice.strip() == '1'):
         if len(lstTable) > 0:
             for dicRow in lstTable:
-                print("Item: {} | Value: {}".format(dicRow["item"], dicRow["value"]))
+                print("Task: {} | Priority: {}".format(dicRow["task"], dicRow["priority"]))
         else:
-            print("The table of items is currently empty. Please add items to the table")
+            print("The table of tasks is currently empty. Please add items to the table")
         continue
     # Step 4 - Add a new item to the list/Table
     elif (strChoice.strip() == '2'):
-        newItem = input("Please enter a new item: ")
+        newTask = input("Please enter a new task: ")
         try:
-            newFloatValue = float(input("Please enter a value for the new item: $"))
+            newIntPriority = int(input("Please enter a priority for the new task: "))
         except ValueError as error:
             print("The Value provided is not a number. Please introduce a number next time")
         except Exception as error:
             print(error)
         else:
-            lstTable.append({"item": newItem.strip(), "value": newFloatValue})
+            lstTable.append({"task": newTask.strip(), "priority": newIntPriority})
             print("Thank you! The data provided has been added to the table")
         continue
     # Step 5 - Remove a new item from the list/Table
     elif (strChoice.strip() == '3'):
-        print("You have selected to remove an existing item from the list/Table")
-        itemToRemove = input("Please, provide the name of the item you wish to remove: ")
+        print("You have selected to remove an existing task from the list/Table")
+        taskToRemove = input("Please, provide the name of the task you wish to remove: ")
         found = False
         for dicRow in lstTable:
-            if itemToRemove.strip().lower() == dicRow["item"].lower():
+            if taskToRemove.strip().lower() == dicRow["task"].lower():
                 lstTable.remove(dicRow)
                 found = True
-                print("The item selected has been successfully removed!")
+                print("The task selected has been successfully removed!")
                 break
         if not found:
-            print("The item you selected was not found in the table." \
-                  " Please make sure you are selecting an existing item next time")
+            print("The task you selected was not found in the table." \
+                  " Please make sure you are selecting an existing task next time")
         continue
     # Step 6 - Save tasks to the ToDoList.txt file
     elif (strChoice.strip() == '4'):
         objFile = open("ToDoList.txt", "w+")
         for dicRow in lstTable:
-            objFile.write("{},{} \n".format(dicRow["item"], dicRow["value"]))
+            objFile.write("{},{} \n".format(dicRow["task"], dicRow["priority"]))
         objFile.close()
         print("Data successufully saved to 'ToDoList.txt'")
         continue
